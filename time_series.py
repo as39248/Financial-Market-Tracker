@@ -1,11 +1,10 @@
-from polygon import RESTClient
 from datetime import date, datetime, timedelta
 import pandas as pd
 import pmdarima as pm
 import matplotlib.pyplot as plt
+from utils.api import get_polygon_client
 
-client = RESTClient(api_key="lRZg8R5AflQqo34bbvXjjkwpRyu5sI6x")
-
+client = get_polygon_client()
 
 def create_df(ticker):
 
@@ -43,7 +42,7 @@ def make_time_series(ticker):
     df = create_df(ticker)
     last_date = df.index[-1]
     forecast_index = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=30, freq='D')
-  
+    
     # ARIMA Forecast 
     arima_model = pm.auto_arima(df["Price"], seasonal=True, 
                         suppress_warnings=True, stepwise=True)
