@@ -1,18 +1,27 @@
 from utils.api import get_polygon_client
-from time_series import make_time_series
-from prev_close_price import get_prev_close
-from search_ticker import get_ticker_info
-client = get_polygon_client()
+from market.time_series import make_time_series
+from market.prev_close_price import get_prev_close
+from market.search_ticker import get_ticker_info
+from init_db.user_db import connect_user_db
+from auth.login import login
+from auth.signup import signup
+from saved_ticker.save_ticker import save_ticker
+import sys
+
+
 
 def check_ticker(ticker):
+
+    client = get_polygon_client()
+
     try:
         client.get_ticker_details(ticker)
         return True
     except Exception:
         return False
 
-def run_ticker_task(title, handler_func):
-    print(f"""{title}
+def ticker_search():
+    print(f"""TICKER SEARCH
 
 RETURN - Return to main menu
 """)
@@ -20,49 +29,58 @@ RETURN - Return to main menu
     if ticker == "RETURN":
         return
     elif check_ticker(ticker):
-        handler_func(ticker)
+        make_time_series(ticker)
+        get_ticker_info(ticker)
+        get_prev_close(ticker)
     else:
         print("Invalid Ticker")
-        run_ticker_task(title, handler_func)
+        ticker_search()
 
-
-
-def run_forecast():
-    run_ticker_task("\nHISTORICAL DATA AND FORECAST SEARCH", make_time_series)
-
-def prev_close():
-    run_ticker_task("\nPREVIOUS CLOSE PRICE SEARCH", get_prev_close)
-
-def search_ticker_info():
-    run_ticker_task("\nTICKER INFO SEARCH", get_ticker_info)
-
-
-def handle_command(command):
+def handle_command(command, current_user):
     if command == "E":
         return False
-    elif command == "F":
-        run_forecast()
-    elif command == "P":
-        prev_close()
+    elif command == "T":
+        ticker_search()
     elif command == "S":
-        search_ticker_info()
+        save_ticker(current_user)
+        pass
     else:
-        print("Invalid Ticker")
+        print("Invalid Command")
     return True
+
+def handle_signin():
+    print("""\nWelcome!
+1 - Sign up          
+2 - Log in          
+E - Exit          
+          """)
+    command = input("Enter command: ").strip().upper()
+    if command == "1":
+        signup()
+        return login()
+    elif command == "2":
+        return login()
+    elif command == "E":
+        sys.exit(0)
+    else:
+        print("\nInvalid Command")
+        handle_signin()
 
 
 def main():
+    connect_user_db()
+    current_user = handle_signin()
+
     while True:
         print(f"""
 Available Commands:
               
-S - Search ticker info
-P - Show previous close price
-F - Show historical data and forecast
+T - Ticker Search
+S - Saved Tickers
 E - Exit
         """)
         command = input("Enter command: ").strip().upper()
-        if not handle_command(command):
+        if not handle_command(command, current_user):
             break
 
 

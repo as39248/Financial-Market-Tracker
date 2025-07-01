@@ -4,6 +4,7 @@ import pmdarima as pm
 import matplotlib.pyplot as plt
 from utils.api import get_polygon_client
 
+
 client = get_polygon_client()
 
 def create_df(ticker):
@@ -56,6 +57,7 @@ def make_time_series(ticker):
     arima.set_index("Date", inplace=True)
 
     # plot
+    plt.ion() 
     plt.figure(figsize=(10, 5))
     plt.plot(df, label="Historical")
     plt.plot(arima, label="Forecast", linestyle='--')
