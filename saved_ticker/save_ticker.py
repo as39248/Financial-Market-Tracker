@@ -1,12 +1,15 @@
 from utils.connect_db import connect_db
+from utils.validate_ticker import check_ticker
 
 def save_ticker(current_user):
+    
+    ticker = input("\nAdd ticker: ").strip().upper()
+
+    if not check_ticker(ticker):
+        return False
 
     userdb = connect_db()
     cursor = userdb.cursor()
-
-    print("\nSave Ticker\n")
-    ticker = input("Enter ticker: ").strip().upper()
 
     cursor.execute("SELECT id FROM users WHERE username=%s", (current_user,))
     user = cursor.fetchone()
@@ -23,5 +26,8 @@ def save_ticker(current_user):
         cursor.execute("INSERT INTO saved_ticker (user_id, ticker) VALUES (%s, %s)", (user_id, ticker))
         userdb.commit()
         print("\nTicker Saved.")
+
     userdb.close()
+    return True
+
 

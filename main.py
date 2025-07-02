@@ -1,4 +1,5 @@
 from utils.api import get_polygon_client
+from utils.validate_ticker import check_ticker
 from market.time_series import make_time_series
 from market.prev_close_price import get_prev_close
 from market.search_ticker import get_ticker_info
@@ -6,22 +7,13 @@ from init_db.user_db import connect_user_db
 from auth.login import login
 from auth.signup import signup
 from saved_ticker.save_ticker import save_ticker
+from saved_ticker.view_saved_ticker import view_saved_ticker, search_saved_ticker
+from saved_ticker.delete_ticker import delete_ticker
 import sys
 
 
-
-def check_ticker(ticker):
-
-    client = get_polygon_client()
-
-    try:
-        client.get_ticker_details(ticker)
-        return True
-    except Exception:
-        return False
-
 def ticker_search():
-    print(f"""TICKER SEARCH
+    print(f"""\nTicker search
 
 RETURN - Return to main menu
 """)
@@ -36,14 +28,44 @@ RETURN - Return to main menu
         print("Invalid Ticker")
         ticker_search()
 
+def saved_ticker_handler(current_user):
+
+    tickers = view_saved_ticker(current_user)
+    print("""
+A - Add ticker           
+V - View ticker details          
+D - Delete ticker
+R - Return          
+          """)
+    command = input("Enter command: ").strip().upper()
+
+    if command == "A":
+        validate_ticker = save_ticker(current_user)
+        if not validate_ticker:
+            print("\nInvalid Ticker")
+        saved_ticker_handler(current_user)
+    elif command == "V":
+        print("n\SEARCH TICKER")
+        search_saved_ticker(tickers)
+        saved_ticker_handler(current_user)
+    elif command == "D":
+        print("n\DELETE TICKER")
+        delete_ticker(tickers)
+        saved_ticker_handler(current_user)
+    elif command == "R":
+        return
+    else:
+        print("\nInvalid Command")
+        saved_ticker_handler(current_user)
+
+
 def handle_command(command, current_user):
     if command == "E":
         return False
     elif command == "T":
         ticker_search()
     elif command == "S":
-        save_ticker(current_user)
-        pass
+        saved_ticker_handler(current_user)
     else:
         print("Invalid Command")
     return True
