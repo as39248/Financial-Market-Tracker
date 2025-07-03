@@ -3,7 +3,11 @@ from utils.validate_ticker import check_ticker
 
 def save_ticker(current_user):
     
+    print("\nRETURN - Return")
     ticker = input("\nAdd ticker: ").strip().upper()
+
+    if ticker == "RETURN":
+        return True
 
     if not check_ticker(ticker):
         return False
@@ -21,7 +25,7 @@ def save_ticker(current_user):
     if ticker_exist:
         print("\nTicker already saved.")
         userdb.close()
-        save_ticker(current_user)
+        return save_ticker(current_user)
     else:
         cursor.execute("INSERT INTO saved_ticker (user_id, ticker) VALUES (%s, %s)", (user_id, ticker))
         userdb.commit()

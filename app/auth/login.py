@@ -21,4 +21,5 @@ def login():
         print("\nIncorrect username or password.")
         userdb.close()
         login()
+        return
 

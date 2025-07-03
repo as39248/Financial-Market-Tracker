@@ -1,13 +1,13 @@
-from utils.api import get_polygon_client
 from utils.validate_ticker import check_ticker
 from market.time_series import make_time_series
 from market.prev_close_price import get_prev_close
 from market.search_ticker import get_ticker_info
-from init_db.user_db import connect_user_db
 from auth.login import login
+from auth.logout import logout
 from auth.signup import signup
 from saved_ticker.save_ticker import save_ticker
-from saved_ticker.view_saved_ticker import view_saved_ticker, search_saved_ticker
+from saved_ticker.view_saved_ticker import view_saved_ticker
+from saved_ticker.search_saved_ticker import search_saved_ticker
 from saved_ticker.delete_ticker import delete_ticker
 import sys
 
@@ -26,48 +26,49 @@ RETURN - Return to main menu
         get_prev_close(ticker)
     else:
         print("Invalid Ticker")
-        ticker_search()
+        return ticker_search()
 
 def saved_ticker_handler(current_user):
 
     tickers = view_saved_ticker(current_user)
-    print("""
-A - Add ticker           
-V - View ticker details          
-D - Delete ticker
-R - Return          
-          """)
+    
+    print("\nA - Add ticker\n")           
+    if tickers != None:
+        print("S - Search ticker details\n")          
+        print("D - Delete ticker\n")
+    print("R - Return\n")          
+          
     command = input("Enter command: ").strip().upper()
 
     if command == "A":
         validate_ticker = save_ticker(current_user)
         if not validate_ticker:
             print("\nInvalid Ticker")
-        saved_ticker_handler(current_user)
-    elif command == "V":
-        print("n\SEARCH TICKER")
+    elif command == "S" and tickers != None:
+        print("\nSEARCH TICKER")
         search_saved_ticker(tickers)
-        saved_ticker_handler(current_user)
-    elif command == "D":
+    elif command == "D" and tickers != None:
         print("n\DELETE TICKER")
         delete_ticker(tickers)
-        saved_ticker_handler(current_user)
     elif command == "R":
         return
     else:
         print("\nInvalid Command")
-        saved_ticker_handler(current_user)
+    return saved_ticker_handler(current_user)
 
 
 def handle_command(command, current_user):
     if command == "E":
-        return False
+        sys.exit(0)
     elif command == "T":
         ticker_search()
     elif command == "S":
         saved_ticker_handler(current_user)
+    elif command == "L":
+        return logout()
     else:
         print("Invalid Command")
+
     return True
 
 def handle_signin():
@@ -86,11 +87,10 @@ E - Exit
         sys.exit(0)
     else:
         print("\nInvalid Command")
-        handle_signin()
+        return handle_signin()
 
 
 def main():
-    connect_user_db()
     current_user = handle_signin()
 
     while True:
@@ -99,12 +99,13 @@ Available Commands:
               
 T - Ticker Search
 S - Saved Tickers
+L - Log out
 E - Exit
         """)
         command = input("Enter command: ").strip().upper()
         if not handle_command(command, current_user):
             break
 
-
 if __name__ == "__main__":
-    main()
+    while True:    
+        main()
