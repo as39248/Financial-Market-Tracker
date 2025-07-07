@@ -1,111 +1,39 @@
-from utils.validate_ticker import check_ticker
-from market.time_series import make_time_series
-from market.prev_close_price import get_prev_close
-from market.search_ticker import get_ticker_info
-from auth.login import login
-from auth.logout import logout
-from auth.signup import signup
-from saved_ticker.save_ticker import save_ticker
-from saved_ticker.view_saved_ticker import view_saved_ticker
-from saved_ticker.search_saved_ticker import search_saved_ticker
-from saved_ticker.delete_ticker import delete_ticker
-import sys
+import streamlit as st
+from ui.login import login_page
+from ui.logout import logout_page
+from ui.signup import signup_page
+from ui.search import search_page
+from ui.saved_ticker import saved_ticker_page
 
 
-def ticker_search():
-    print(f"""\nTicker search
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-RETURN - Return to main menu
-""")
-    ticker = input("Enter ticker: ").strip().upper()
-    if ticker == "RETURN":
-        return
-    elif check_ticker(ticker):
-        make_time_series(ticker)
-        get_ticker_info(ticker)
-        get_prev_close(ticker)
-    else:
-        print("Invalid Ticker")
-        return ticker_search()
+if "go_signup" not in st.session_state:
+    st.session_state.go_signup = False
 
-def saved_ticker_handler(current_user):
+# Sign up 
+if st.session_state.go_signup:
+    signup_page()
+    st.stop()
 
-    tickers = view_saved_ticker(current_user)
+# Page display logged in 
+if st.session_state.logged_in:
+
+    if st.sidebar.button("Log out", use_container_width=True):
+        logout_page()
+        
+    search = st.Page(search_page, title="Search", icon=":material/search:")
+    saved_ticker = st.Page(saved_ticker_page, title="Saved Ticker", icon=":material/bookmark:")
+
+    pg = st.navigation({
+        "Search": [search],
+        "Saved": [saved_ticker],
+        
+    })
+    pg.run()
     
-    print("\nA - Add ticker\n")           
-    if tickers != None:
-        print("S - Search ticker details\n")          
-        print("D - Delete ticker\n")
-    print("R - Return\n")          
-          
-    command = input("Enter command: ").strip().upper()
+# Page display not logged in 
+else:
 
-    if command == "A":
-        validate_ticker = save_ticker(current_user)
-        if not validate_ticker:
-            print("\nInvalid Ticker")
-    elif command == "S" and tickers != None:
-        print("\nSEARCH TICKER")
-        search_saved_ticker(tickers)
-    elif command == "D" and tickers != None:
-        print("n\DELETE TICKER")
-        delete_ticker(tickers)
-    elif command == "R":
-        return
-    else:
-        print("\nInvalid Command")
-    return saved_ticker_handler(current_user)
-
-
-def handle_command(command, current_user):
-    if command == "E":
-        sys.exit(0)
-    elif command == "T":
-        ticker_search()
-    elif command == "S":
-        saved_ticker_handler(current_user)
-    elif command == "L":
-        return logout()
-    else:
-        print("Invalid Command")
-
-    return True
-
-def handle_signin():
-    print("""\nWelcome!
-1 - Sign up          
-2 - Log in          
-E - Exit          
-          """)
-    command = input("Enter command: ").strip().upper()
-    if command == "1":
-        signup()
-        return login()
-    elif command == "2":
-        return login()
-    elif command == "E":
-        sys.exit(0)
-    else:
-        print("\nInvalid Command")
-        return handle_signin()
-
-
-def main():
-    current_user = handle_signin()
-
-    while True:
-        print(f"""
-Available Commands:
-              
-T - Ticker Search
-S - Saved Tickers
-L - Log out
-E - Exit
-        """)
-        command = input("Enter command: ").strip().upper()
-        if not handle_command(command, current_user):
-            break
-
-if __name__ == "__main__":
-    while True:    
-        main()
+    login_page()

@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 import pandas as pd
 import pmdarima as pm
+import streamlit as st
 import matplotlib.pyplot as plt
 from utils.api import get_polygon_client
 
@@ -57,16 +58,16 @@ def make_time_series(ticker):
     arima.set_index("Date", inplace=True)
 
     # plot
-    plt.ion() 
-    plt.figure(figsize=(10, 5))
-    plt.plot(df, label="Historical")
-    plt.plot(arima, label="Forecast", linestyle='--')
-    plt.xlabel("Date")
-    plt.ylabel("Price")
-    plt.title(f"{ticker} Price Forecast")
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.plot(df, label="Historical")
+    ax.plot(arima, label="Forecast", linestyle='--')
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.set_title(f"{ticker} Price Forecast")
+    ax.legend()
+    fig.tight_layout()
+
+    st.pyplot(fig)
     
 
 

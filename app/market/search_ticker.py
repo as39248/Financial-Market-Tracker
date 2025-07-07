@@ -7,7 +7,6 @@ def get_ticker_info(ticker):
     details = client.get_ticker_details(
 	ticker,
 	)
-    print(f"""\nAbout {details.name}\n
-{details.description}""")
+    return details.name, details.description
 
    

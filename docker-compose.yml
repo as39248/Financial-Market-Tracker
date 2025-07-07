@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"
 
 services:
   db:
@@ -29,8 +29,11 @@ services:
       API_KEY: ${API_KEY}
     volumes:
       - ./app:/app
+    ports:
+      - "8501:8501"
     working_dir: /app
-    command: ["python", "main.py"]
+    command: ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
+   
 
 volumes:
   db_data:

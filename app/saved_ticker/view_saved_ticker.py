@@ -13,14 +13,14 @@ def view_saved_ticker(current_user):
     # Find the saved tickers
     cursor.execute("SELECT ticker FROM saved_ticker WHERE user_id=%s", (user_id,))
     tickers = cursor.fetchall()
-    if tickers:
-        print("\nSaved tickers:\n")
+
+    saved_tickers = []
+    if tickers:  
         for t in tickers:
-            print(t[0])
+            saved_tickers.append(t[0])
     else:
-        print("\nNo tickers saved.\n")
         return None
-    return tickers
+    return saved_tickers
 
 
 

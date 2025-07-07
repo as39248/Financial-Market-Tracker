@@ -9,4 +9,4 @@ def get_prev_close(ticker):
         adjusted="true",
     )
     close_date = datetime.fromtimestamp(agg[0].timestamp / 1000).date()
-    print(f"\nTicker: {ticker} | Date: {close_date} | ${agg[0].close}")
+    return f"""Date: {close_date} | ${agg[0].close}"""
