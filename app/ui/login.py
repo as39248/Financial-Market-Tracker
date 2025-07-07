@@ -3,7 +3,7 @@ from auth.login import login
 
 
 def login_page():
-    st.title("Welcome to the Financial Market!")
+    st.title("Welcome to the Financial Market Tracker!")
     st.header("Log in")
     username = st.text_input("Username", placeholder="Username")
     password = st.text_input("Password", type="password", placeholder="Password")
