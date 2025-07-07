@@ -12,14 +12,14 @@ A full-stack Streamlit web application that allows users to search stock tickers
 - 📈 Historical price + 30-day ARIMA forecast plot
 - 💾 Save/Delete tickers to user profile
 - 🐳 Dockerized for easy deployment
-- ☁️ Polygon.io integration for real-time financial data
+- ☁️ Polygon.io API to fetch historical stock data
 
 ---
 
 ## 📦 Tech Stack
 
 - **Frontend/UI**: Streamlit  
-- **Backend**: Python (custom logic + REST-like actions)  
+- **Backend**: Python   
 - **Database**: MySQL  
 - **Forecasting**: `pmdarima` (ARIMA)  
 - **Deployment**: Docker + Docker Compose  
@@ -36,11 +36,11 @@ git clone https://github.com/your-username/financial-market-tracker.git
 cd financial-market-tracker
 
 
-2️⃣ Set Up .env File
+**### 2️⃣ Set Up .env File**
 Create a .env file in the root directory and include your configuration:
 
-env
-Copy code
+.env
+
 # MySQL Config
 DB_HOST=db
 DB_USER=your_mysql_user
@@ -51,13 +51,13 @@ DB_NAME=your_database_name
 API_KEY=your_polygon_api_key
 📝 Replace values with your actual credentials and API key.
 
-3️⃣ Run with Docker Compose
+**### 3️⃣ Run with Docker Compose**
 Before you start, make sure MySQL is not already running locally on your device (e.g., from a previous install or service). Docker will run its own MySQL container, and port conflicts on 3306 will cause errors.
 
 Build and launch the app:
 
 bash
-Copy code
+
 docker-compose up --build
 Streamlit app will be live at: http://localhost:8501
 
@@ -65,6 +65,6 @@ MySQL will be running inside the container at: localhost:3306
 
 To stop and clean up containers:
 
-bash
-Copy code
+```bash
+
 docker-compose down
