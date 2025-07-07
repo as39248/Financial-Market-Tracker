@@ -11,6 +11,7 @@ A full-stack Streamlit web application that allows users to search stock tickers
 - 📝 Company info and previous close display
 - 📈 Historical price + 30-day ARIMA forecast plot
 - 💾 Save/Delete tickers to user profile
+- 🛡️ Passwords hashed with SHA-256 for security
 - 🐳 Dockerized for easy deployment
 - ☁️ Polygon.io API to fetch historical stock data
 
@@ -20,7 +21,7 @@ A full-stack Streamlit web application that allows users to search stock tickers
 
 - **Frontend/UI**: Streamlit  
 - **Backend**: Python   
-- **Database**: MySQL  
+- **Database**: MySQL (Relational Database)  
 - **Forecasting**: `pmdarima` (ARIMA)  
 - **Deployment**: Docker + Docker Compose  
 - **API**: [Polygon.io](https://polygon.io)
