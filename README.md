@@ -27,20 +27,20 @@ A full-stack Streamlit web application that allows users to search stock tickers
 
 ---
 
-## ⚙️ Local Setup Instructions
+# ⚙️ Local Setup Instructions
 
-### 1️⃣ Clone the Repository
+## 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/financial-market-tracker.git
 cd financial-market-tracker
+```
 
+## 2️⃣ Set Up `.env` File
 
-**### 2️⃣ Set Up .env File**
-Create a .env file in the root directory and include your configuration:
+Create a `.env` file in the root directory and add the following configuration:
 
-.env
-
+```env
 # MySQL Config
 DB_HOST=db
 DB_USER=your_mysql_user
@@ -49,22 +49,26 @@ DB_NAME=your_database_name
 
 # Polygon API
 API_KEY=your_polygon_api_key
-📝 Replace values with your actual credentials and API key.
+```
 
-**### 3️⃣ Run with Docker Compose**
-Before you start, make sure MySQL is not already running locally on your device (e.g., from a previous install or service). Docker will run its own MySQL container, and port conflicts on 3306 will cause errors.
+📝 *Replace the values with your actual MySQL credentials and Polygon API key.*
 
-Build and launch the app:
+## 3️⃣ Run with Docker Compose
 
-bash
+❗ **Before you start**, make sure MySQL is **not already running** locally on your machine. Docker will launch its own MySQL container, and if port **3306** is already in use, you may encounter conflicts.
 
-docker-compose up --build
-Streamlit app will be live at: http://localhost:8501
-
-MySQL will be running inside the container at: localhost:3306
-
-To stop and clean up containers:
+To build and launch the app:
 
 ```bash
+docker-compose up --build
+```
 
+- Streamlit app will be live at: [http://localhost:8501](http://localhost:8501)  
+- MySQL will be running inside the container at: `localhost:3306`
+
+To stop and clean up all containers:
+
+```bash
 docker-compose down
+```
+
