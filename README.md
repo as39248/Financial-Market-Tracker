@@ -47,12 +47,12 @@ Create a `.env` file in the root directory and add the following configuration:
 ```env
 # MySQL Config
 DB_HOST=db
-DB_USER=your_mysql_user
-DB_PASSWORD=your_mysql_password
+DB_USER=your_mysql_user            # Set this to a non-root MySQL user
+DB_PASSWORD=your_mysql_password    # Set the password
 DB_NAME=your_database_name
 
 # Polygon API
-API_KEY=your_polygon_api_key
+API_KEY=your_polygon_api_key       # Get the API key from https://polygon.io
 ```
 
 📝 *Replace the values with your actual MySQL credentials and Polygon API key.*
