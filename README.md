@@ -1,7 +1,7 @@
 #  Financial Market Tracker
 
-> 🔗 **Live Demo**: [http://3.133.79.86:8501](http://3.133.79.86:8501)  
-> *(Note: This link may break if the EC2 instance is stopped or restarted without an Elastic IP.)*
+> 🔗 **Live Demo**: [http://18.224.30.61:8501](http://18.224.30.61:8501)  
+> *(Note: This link may become unavailable if the EC2 instance is stopped or restarted without an Elastic IP.)*
 > 
 A full-stack Streamlit web application that allows users to search stock tickers, view company information, visualize historical price data, and generate 30-day ARIMA forecasts. Users can also save and manage their favorite tickers with login/signup authentication, all backed by a MySQL database.
 
