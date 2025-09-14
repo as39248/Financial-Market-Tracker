@@ -18,8 +18,6 @@ def view_saved_ticker(current_user):
     if tickers:  
         for t in tickers:
             saved_tickers.append(t[0])
-    else:
-        return None
     return saved_tickers
 
 
